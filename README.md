@@ -1,13 +1,13 @@
 # 作业管理系统
 
-微信小程序 + 自建后端的作业管理应用，支持作业管理、积分打卡、奖品兑换功能。
+微信小程序 + FastAPI 后端的作业管理应用，支持作业管理、积分打卡、奖品兑换功能。
 
 ## 项目组成
 
 ```
 homework-manager/
-├── homework-server/     # 后端服务 (Node.js + Express + MySQL)
-├── homework-mini/       # 微信小程序前端
+├── backend/            # 后端服务 (Python + FastAPI + MySQL)
+├── homework-mini/      # 微信小程序前端
 ├── PRD.md              # 产品需求文档
 └── TECH_DESIGN.md      # 技术设计文档
 ```
@@ -28,16 +28,21 @@ homework-manager/
 - ✅ 积分过期机制
 - ✅ 惩罚扣分机制
 - ✅ 管理员权限
+- ✅ API 自动文档（Swagger）
 
 ## 快速开始
 
 ### 1. 后端部署
 
 ```bash
-cd homework-server
+cd backend
+
+# 创建虚拟环境
+python3 -m venv venv
+source venv/bin/activate
 
 # 安装依赖
-npm install
+pip install -r requirements.txt
 
 # 配置环境变量
 cp .env.example .env
@@ -46,7 +51,7 @@ cp .env.example .env
 mysql -u root -p < scripts/init-db.sql
 
 # 启动服务
-npm run dev
+uvicorn app.main:app --host 0.0.0.0 --port 3000 --reload
 ```
 
 ### 2. 小程序开发
@@ -60,18 +65,18 @@ npm run dev
 | 层级 | 技术 |
 |------|------|
 | 前端 | 微信小程序原生 |
-| 后端 | Node.js + Express |
+| 后端 | Python + FastAPI |
+| ORM | SQLAlchemy 2.0 |
 | 数据库 | MySQL 8.0 |
 | 缓存 | Redis 7.x |
-| 部署 | Docker + Nginx |
+| 定时任务 | APScheduler |
+| 部署 | Docker + Gunicorn + Uvicorn |
 
 ## API 接口
 
-详见 [homework-server/README.md](homework-server/README.md)
+启动服务后访问 Swagger 文档：http://localhost:3000/docs
 
-## 数据库设计
-
-详见 [TECH_DESIGN.md](TECH_DESIGN.md)
+详见 [backend/README.md](backend/README.md)
 
 ## 开发计划
 
@@ -87,6 +92,5 @@ npm run dev
 - [x] 小程序积分页
 - [x] 小程序兑换页
 - [x] 小程序个人页
-- [x] Docker 部署配置
 - [ ] 服务器部署上线
 - [ ] 微信审核发布
