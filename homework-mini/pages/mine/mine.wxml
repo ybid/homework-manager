@@ -1,0 +1,54 @@
+<!--pages/mine/mine.wxml-->
+<view class="container">
+  <!-- 用户信息 -->
+  <view class="user-card">
+    <view class="user-avatar">
+      <image wx:if="{{userInfo.avatar_url}}" src="{{userInfo.avatar_url}}" mode="aspectFill" />
+      <view wx:else class="placeholder">{{userInfo.nick_name ? userInfo.nick_name[0] : '?'}}</view>
+    </view>
+    <view class="user-info">
+      <text class="user-name">{{userInfo.nick_name || '未登录'}}</text>
+      <text class="user-role" wx:if="{{userInfo.role === 'admin'}}">管理员</text>
+    </view>
+    <view class="login-btn" wx:if="{{!userInfo}}" bindtap="onLogin">
+      点击登录
+    </view>
+  </view>
+
+  <!-- 积分卡片 -->
+  <view class="points-card" wx:if="{{userInfo}}">
+    <view class="points-total">
+      <text class="label">当前积分</text>
+      <text class="num">{{stats.total_points || 0}}</text>
+    </view>
+    <view class="points-stats">
+      <view class="stat">
+        <text class="num">{{stats.total_earned || 0}}</text>
+        <text class="label">累计获得</text>
+      </view>
+      <view class="stat">
+        <text class="num">{{stats.total_spent || 0}}</text>
+        <text class="label">累计消耗</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 菜单列表 -->
+  <view class="menu-list" wx:if="{{userInfo}}">
+    <view class="menu-item" bindtap="onMyHomeworks">
+      <text class="menu-icon">📋</text>
+      <text class="menu-text">我的作业</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="onSettings">
+      <text class="menu-icon">⚙️</text>
+      <text class="menu-text">设置</text>
+      <text class="menu-arrow">></text>
+    </view>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version">
+    <text>作业管理系统 v1.0.0</text>
+  </view>
+</view>

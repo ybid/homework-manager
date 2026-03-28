@@ -1,0 +1,79 @@
+<!--pages/exchange/exchange.wxml-->
+<view class="container">
+  <!-- tab 切换 -->
+  <view class="tabs">
+    <view
+      class="tab {{tab === 'rewards' ? 'active' : ''}}"
+      data-tab="rewards"
+      bindtap="switchTab"
+    >
+      可兑换奖品
+    </view>
+    <view
+      class="tab {{tab === 'records' ? 'active' : ''}}"
+      data-tab="records"
+      bindtap="switchTab"
+    >
+      兑换记录
+    </view>
+  </view>
+
+  <!-- 奖品列表 -->
+  <view class="rewards-list" wx:if="{{tab === 'rewards'}}">
+    <block wx:if="{{rewards.length > 0}}">
+      <view
+        class="reward-item {{item.stock <= 0 ? 'sold-out' : ''}}"
+        wx:for="{{rewards}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        data-name="{{item.name}}"
+        data-stock="{{item.stock}}"
+        data-points="{{item.points}}"
+        bindtap="onExchange"
+      >
+        <view class="reward-image">
+          <image wx:if="{{item.image_url}}" src="{{item.image_url}}" mode="aspectFill" />
+          <view wx:else class="placeholder">🎁</view>
+        </view>
+        <view class="reward-info">
+          <text class="reward-name">{{item.name}}</text>
+          <text class="reward-desc" wx:if="{{item.description}}">{{item.description}}</text>
+          <view class="reward-meta">
+            <text class="points">{{item.points}}积分</text>
+            <text class="stock">库存: {{item.stock}}</text>
+          </view>
+        </view>
+        <view class="reward-action">
+          <view class="exchange-btn {{item.stock <= 0 ? 'disabled' : ''}}">
+            {{item.stock <= 0 ? '已兑完' : '兑换'}}
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view class="empty" wx:elif="{{!loading}}">
+      <text>暂无可兑换奖品</text>
+    </view>
+  </view>
+
+  <!-- 兑换记录 -->
+  <view class="records-list" wx:if="{{tab === 'records'}}">
+    <block wx:if="{{exchanges.length > 0}}">
+      <view class="record-item" wx:for="{{exchanges}}" wx:key="id">
+        <view class="record-image">
+          <image wx:if="{{item.reward_image}}" src="{{item.reward_image}}" mode="aspectFill" />
+          <view wx:else class="placeholder">🎁</view>
+        </view>
+        <view class="record-info">
+          <text class="record-name">{{item.reward_name}}</text>
+          <text class="record-time">{{item.created_at}}</text>
+        </view>
+        <view class="record-points">-{{item.points}}积分</view>
+      </view>
+    </block>
+
+    <view class="empty" wx:else>
+      <text>暂无兑换记录</text>
+    </view>
+  </view>
+</view>

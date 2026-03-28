@@ -1,0 +1,117 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 顶部统计 -->
+  <view class="header">
+    <view class="date">{{today.date}}</view>
+    <view class="stats">
+      <view class="stat-item">
+        <text class="num">{{today.stats.total || 0}}</text>
+        <text class="label">今日任务</text>
+      </view>
+      <view class="stat-item completed">
+        <text class="num">{{today.stats.completed || 0}}</text>
+        <text class="label">已完成</text>
+      </view>
+      <view class="stat-item">
+        <text class="num">{{today.stats.today_points || 0}}</text>
+        <text class="label">今日积分</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 作业列表 -->
+  <view class="list">
+    <view class="section-title">今日作业</view>
+
+    <block wx:if="{{loading}}">
+      <view class="loading">加载中...</view>
+    </block>
+
+    <block wx:elif="{{today.list && today.list.length > 0}}">
+      <view
+        class="homework-item {{item.completed ? 'completed' : ''}}"
+        wx:for="{{today.list}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onComplete"
+      >
+        <view class="homework-info">
+          <view class="homework-name">{{item.name}}</view>
+          <view class="homework-meta">
+            <text class="tag {{item.type}}">{{item.type === 'daily' ? '每日' : item.type === 'weekly' ? '每周' : item.type === 'monthly' ? '每月' : '自定义'}}</text>
+            <text class="points">+{{item.points}}积分</text>
+          </view>
+        </view>
+        <view class="homework-status">
+          <view class="status-icon {{item.completed ? 'done' : ''}}">
+            <block wx:if="{{item.completed}}">✓</block>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view class="empty" wx:else>
+      <text>今天没有待完成的作业</text>
+    </view>
+  </view>
+
+  <!-- 添加按钮 -->
+  <view class="add-btn" bindtap="showAdd">
+    <text class="add-icon">+</text>
+  </view>
+
+  <!-- 添加弹窗 -->
+  <view class="modal {{showAddModal ? 'show' : ''}}" bindtap="hideAdd">
+    <view class="modal-content" catchtap="">
+      <view class="modal-title">添加作业</view>
+
+      <view class="form-item">
+        <text class="label">作业名称 *</text>
+        <input
+          class="input"
+          placeholder="请输入作业名称"
+          value="{{addForm.name}}"
+          data-field="name"
+          bindinput="onInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="label">作业描述</text>
+        <input
+          class="input"
+          placeholder="请输入作业描述"
+          value="{{addForm.description}}"
+          data-field="description"
+          bindinput="onInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="label">作业类型</text>
+        <picker mode="selector" range="{{types}}" range-key="label" bindchange="onTypeChange">
+          <view class="picker">
+            {{types[addForm.type === 'daily' ? 0 : addForm.type === 'weekly' ? 1 : addForm.type === 'monthly' ? 2 : 3].label}}
+          </view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <text class="label">完成积分 *</text>
+        <input
+          class="input"
+          type="number"
+          placeholder="1-1000"
+          value="{{addForm.points}}"
+          data-field="points"
+          bindinput="onInput"
+        />
+      </view>
+
+      <view class="form-actions">
+        <button class="btn-cancel" bindtap="hideAdd">取消</button>
+        <button class="btn-submit" bindtap="onAdd">添加</button>
+      </view>
+    </view>
+  </view>
+</view>

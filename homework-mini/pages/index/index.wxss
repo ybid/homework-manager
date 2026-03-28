@@ -1,0 +1,251 @@
+/* pages/index/index.wxss */
+
+.container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 120rpx;
+}
+
+.header {
+  background: linear-gradient(135deg, #4A90D9, #357ABD);
+  padding: 40rpx 30rpx;
+  color: #fff;
+}
+
+.date {
+  font-size: 32rpx;
+  margin-bottom: 30rpx;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-item .num {
+  font-size: 48rpx;
+  font-weight: bold;
+  display: block;
+}
+
+.stat-item .label {
+  font-size: 24rpx;
+  opacity: 0.8;
+}
+
+.stat-item.completed .num {
+  color: #69DB8A;
+}
+
+.list {
+  padding: 20rpx 30rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.loading {
+  text-align: center;
+  padding: 40rpx;
+  color: #999;
+}
+
+.homework-item {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.homework-item.completed {
+  opacity: 0.6;
+}
+
+.homework-info {
+  flex: 1;
+}
+
+.homework-name {
+  font-size: 32rpx;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.homework-meta {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.tag {
+  font-size: 22rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  background: #e8f4fd;
+  color: #4A90D9;
+}
+
+.tag.weekly {
+  background: #fff3e0;
+  color: #ff9800;
+}
+
+.tag.monthly {
+  background: #f3e5f5;
+  color: #9c27b0;
+}
+
+.tag.custom {
+  background: #e8f5e9;
+  color: #4caf50;
+}
+
+.points {
+  font-size: 24rpx;
+  color: #ff9800;
+}
+
+.homework-status {
+  margin-left: 20rpx;
+}
+
+.status-icon {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  border: 4rpx solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #fff;
+}
+
+.status-icon.done {
+  background: #69DB8A;
+  border-color: #69DB8A;
+}
+
+.empty {
+  text-align: center;
+  padding: 80rpx;
+  color: #999;
+  font-size: 28rpx;
+}
+
+.add-btn {
+  position: fixed;
+  right: 40rpx;
+  bottom: 140rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background: linear-gradient(135deg, #4A90D9, #357ABD);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 20rpx rgba(74, 144, 217, 0.4);
+}
+
+.add-icon {
+  color: #fff;
+  font-size: 48rpx;
+  line-height: 1;
+}
+
+/* 弹窗 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: flex-end;
+  z-index: 100;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 40rpx;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 40rpx;
+  text-align: center;
+}
+
+.form-item {
+  margin-bottom: 30rpx;
+}
+
+.form-item .label {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.input {
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+}
+
+.picker {
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+}
+
+.form-actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 40rpx;
+}
+
+.btn-cancel,
+.btn-submit {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-cancel {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, #4A90D9, #357ABD);
+  color: #fff;
+}

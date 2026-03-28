@@ -1,0 +1,169 @@
+/* pages/exchange/exchange.wxss */
+
+.container {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.tabs {
+  display: flex;
+  background: #fff;
+  padding: 0 20rpx;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx;
+  font-size: 28rpx;
+  color: #666;
+  position: relative;
+}
+
+.tab.active {
+  color: #4A90D9;
+  font-weight: bold;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 4rpx;
+  background: #4A90D9;
+  border-radius: 2rpx;
+}
+
+.rewards-list,
+.records-list {
+  padding: 20rpx 30rpx;
+}
+
+.reward-item,
+.record-item {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.reward-item.sold-out {
+  opacity: 0.6;
+}
+
+.reward-image,
+.record-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.reward-image image,
+.record-image image {
+  width: 100%;
+  height: 100%;
+}
+
+.placeholder {
+  width: 100%;
+  height: 100%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+}
+
+.reward-info,
+.record-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.reward-name,
+.record-name {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reward-desc {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+  margin-top: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.record-time {
+  font-size: 22rpx;
+  color: #999;
+  display: block;
+  margin-top: 8rpx;
+}
+
+.reward-meta {
+  margin-top: 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.points {
+  font-size: 28rpx;
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.stock {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.record-points {
+  font-size: 28rpx;
+  color: #f44336;
+  font-weight: bold;
+  margin-left: 20rpx;
+}
+
+.reward-action {
+  margin-left: 20rpx;
+}
+
+.exchange-btn {
+  padding: 12rpx 24rpx;
+  background: linear-gradient(135deg, #4A90D9, #357ABD);
+  color: #fff;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+}
+
+.exchange-btn.disabled {
+  background: #ccc;
+}
+
+.empty {
+  text-align: center;
+  padding: 80rpx;
+  color: #999;
+  font-size: 28rpx;
+}
