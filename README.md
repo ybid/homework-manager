@@ -34,6 +34,8 @@ homework-manager/
 
 ### 1. 后端部署
 
+#### Linux / macOS
+
 ```bash
 cd backend
 
@@ -44,11 +46,33 @@ source venv/bin/activate
 # 安装依赖
 pip install -r requirements.txt
 
-# 配置环境变量
+# 配置环境变量（按需修改数据库等配置）
 cp .env.example .env
 
 # 初始化数据库
-mysql -u root -p < scripts/init-db.sql
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS homework CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+# 启动服务
+uvicorn app.main:app --host 0.0.0.0 --port 3000 --reload
+```
+
+#### Windows (Git Bash)
+
+```bash
+cd backend
+
+# 创建虚拟环境
+python -m venv venv
+source venv/Scripts/activate
+
+# 安装依赖
+pip install -r requirements.txt
+
+# 配置环境变量（按需修改数据库等配置）
+cp .env.example .env
+
+# 初始化数据库（确保 MySQL 已运行）
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS homework CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
 # 启动服务
 uvicorn app.main:app --host 0.0.0.0 --port 3000 --reload
