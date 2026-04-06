@@ -1,0 +1,41 @@
+<view class="container">
+  <!-- 记录列表 -->
+  <view class="record-list" wx:if="{{!isEmpty}}">
+    <view class="card record-item" wx:for="{{records}}" wx:key="id">
+      <view class="flex-between">
+        <view class="record-name text-bold">{{item.reward_name || item.name}}</view>
+        <view class="tag {{item.status === 'completed' ? 'tag-success' : item.status === 'rejected' ? 'tag-danger' : 'tag-pending'}}">
+          {{item.status === 'pending' ? '处理中' : item.status === 'completed' ? '已完成' : item.status === 'rejected' ? '已拒绝' : item.status === 'cancelled' ? '已取消' : item.status}}
+        </view>
+      </view>
+      <view class="record-info mt-10">
+        <view class="flex-between">
+          <text class="text-sm text-gray">消耗积分</text>
+          <text class="text-sm text-warning text-bold">-{{item.points_cost || item.cost}} 积分</text>
+        </view>
+        <view class="flex-between mt-10">
+          <text class="text-sm text-gray">兑换时间</text>
+          <text class="text-sm text-gray">{{item.created_at || item.exchange_time}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{isEmpty && !loading}}">
+    <view class="empty-icon">🎁</view>
+    <view class="empty-text">暂无兑换记录</view>
+    <view class="empty-hint text-sm text-gray">完成作业赚取积分，去兑换心仪的奖品吧</view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="loading-more" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="text-sm text-gray ml-10">加载中...</text>
+  </view>
+
+  <!-- 没有更多 -->
+  <view class="no-more text-sm text-gray" wx:if="{{!hasMore && records.length > 0 && !loading}}">
+    — 没有更多了 —
+  </view>
+</view>

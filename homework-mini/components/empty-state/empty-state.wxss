@@ -1,0 +1,23 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 40rpx;
+}
+
+.empty__icon {
+  font-size: 100rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty__text {
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+
+.empty__btn {
+  margin-top: 10rpx;
+}

@@ -1,0 +1,21 @@
+<view class="reward-card {{disabled ? 'reward-card--disabled' : ''}}" bindtap="onTap">
+  <view class="reward-card__img-wrap">
+    <image
+      wx:if="{{item.image_url}}"
+      class="reward-card__img"
+      src="{{item.image_url}}"
+      mode="aspectFill"
+    />
+    <view wx:else class="reward-card__img-placeholder">🎁</view>
+  </view>
+  <view class="reward-card__info">
+    <text class="reward-card__name">{{item.name}}</text>
+    <view class="reward-card__bottom">
+      <text class="reward-card__price">🏆 {{item.points}}</text>
+      <text wx:if="{{item.stock <= 5 && item.stock > 0}}" class="reward-card__stock">仅剩{{item.stock}}件</text>
+    </view>
+  </view>
+  <view wx:if="{{disabled}}" class="reward-card__mask">
+    <text>积分不足</text>
+  </view>
+</view>

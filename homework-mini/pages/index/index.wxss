@@ -1,0 +1,104 @@
+.page {
+  padding-bottom: 120rpx;
+}
+
+.header {
+  background: linear-gradient(135deg, #4A90D9, #357ABD);
+  padding: 40rpx 30rpx;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__day {
+  font-size: 40rpx;
+  font-weight: 700;
+  display: block;
+}
+
+.header__weekday {
+  font-size: 26rpx;
+  opacity: 0.85;
+  margin-top: 6rpx;
+  display: block;
+}
+
+.header__stats {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16rpx;
+  padding: 16rpx 24rpx;
+}
+
+.header__stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16rpx;
+}
+
+.header__stat-num {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+.header__stat-num.text-warning {
+  color: #FFD666;
+}
+
+.header__stat-label {
+  font-size: 20rpx;
+  opacity: 0.8;
+  margin-top: 4rpx;
+}
+
+.header__stat-divider {
+  width: 1rpx;
+  height: 48rpx;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 0 8rpx;
+}
+
+.progress-wrap {
+  margin: 24rpx 24rpx 0;
+  padding: 20rpx 24rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.progress-bar {
+  height: 12rpx;
+  background: #EBEDF0;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.progress-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4A90D9, #52C41A);
+  border-radius: 6rpx;
+  transition: width 0.5s ease;
+}
+
+.progress-text {
+  display: block;
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 10rpx;
+  text-align: center;
+}
+
+.section {
+  padding: 20rpx 24rpx;
+}
+
+.section__title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20rpx;
+}

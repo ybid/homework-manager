@@ -1,0 +1,21 @@
+<view class="container">
+  <view class="header">
+    <view class="header-title">数据概览</view>
+    <view class="header-desc text-sm text-gray">平台运营数据统计</view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-state" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="text-sm text-gray mt-20">加载中...</text>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="stats-grid" wx:if="{{!loading && cards.length > 0}}">
+    <view class="stat-card card" wx:for="{{cards}}" wx:key="label">
+      <view class="stat-icon" style="background: {{item.color}}20;">{{item.icon}}</view>
+      <view class="stat-value" style="color: {{item.color}};">{{item.value}}</view>
+      <view class="stat-label text-sm text-gray">{{item.label}}</view>
+    </view>
+  </view>
+</view>

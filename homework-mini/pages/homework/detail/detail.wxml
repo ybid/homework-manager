@@ -1,0 +1,60 @@
+<view class="page" wx:if="{{homework}}">
+  <!-- 作业信息卡片 -->
+  <view class="info-card">
+    <view class="info-card__header">
+      <text class="info-card__name">{{homework.name}}</text>
+      <view class="info-card__tag" style="background: {{typeColor}}20; color: {{typeColor}};">
+        {{typeLabel}}
+      </view>
+    </view>
+
+    <text class="info-card__desc" wx:if="{{homework.description}}">{{homework.description}}</text>
+
+    <view class="info-card__meta">
+      <view class="meta-item">
+        <text class="meta-item__label">完成积分</text>
+        <text class="meta-item__value text-warning">+{{homework.points}}</text>
+      </view>
+      <view class="meta-item" wx:if="{{homework.penalty > 0}}">
+        <text class="meta-item__label">惩罚积分</text>
+        <text class="meta-item__value text-danger">-{{homework.penalty}}</text>
+      </view>
+      <view class="meta-item" wx:if="{{homework.expire_days > 0}}">
+        <text class="meta-item__label">过期天数</text>
+        <text class="meta-item__value">{{homework.expire_days}}天</text>
+      </view>
+      <view class="meta-item">
+        <text class="meta-item__label">创建时间</text>
+        <text class="meta-item__value">{{homework.created_at}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 打卡记录 -->
+  <view class="section">
+    <view class="section__title">打卡记录</view>
+
+    <view class="record-list" wx:if="{{homework.records && homework.records.length > 0}}">
+      <view class="record-item" wx:for="{{homework.records}}" wx:key="id">
+        <view class="record-item__dot"></view>
+        <view class="record-item__content">
+          <text class="record-item__date">{{item.date}}</text>
+          <text class="record-item__note" wx:if="{{item.note}}">{{item.note}}</text>
+        </view>
+        <text class="record-item__points text-success">+{{item.points}}</text>
+      </view>
+    </view>
+
+    <empty-state
+      wx:if="{{!homework.records || homework.records.length === 0}}"
+      icon="📝"
+      text="还没有打卡记录~"
+    />
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="actions">
+    <button class="btn btn-primary" style="flex:1; margin-right:16rpx;" bindtap="onEdit">✏️ 编辑</button>
+    <button class="btn btn-danger" style="flex:1;" bindtap="onDelete">🗑️ 删除</button>
+  </view>
+</view>

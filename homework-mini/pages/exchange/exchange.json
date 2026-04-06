@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "积分兑换",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "reward-card": "/components/reward-card/reward-card",
+    "empty-state": "/components/empty-state/empty-state",
+    "loading": "/components/loading/loading"
+  }
+}

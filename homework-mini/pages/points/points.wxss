@@ -1,0 +1,144 @@
+.stats-card {
+  margin: 24rpx;
+  background: linear-gradient(135deg, #4A90D9, #357ABD);
+  border-radius: 20rpx;
+  padding: 36rpx 30rpx;
+  color: #fff;
+  box-shadow: 0 8rpx 24rpx rgba(74, 144, 217, 0.3);
+}
+
+.stats-card__main {
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.stats-card__label {
+  font-size: 24rpx;
+  opacity: 0.85;
+  display: block;
+}
+
+.stats-card__total {
+  font-size: 72rpx;
+  font-weight: 700;
+  display: block;
+  margin-top: 8rpx;
+}
+
+.stats-card__grid {
+  display: flex;
+  justify-content: space-around;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 12rpx;
+  padding: 20rpx 0;
+}
+
+.stats-card__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stats-card__num {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #fff;
+}
+
+.stats-card__num.text-success { color: #A7F3D0; }
+.stats-card__num.text-primary { color: #D4E6FF; }
+.stats-card__num.text-danger { color: #FCA5A5; }
+
+.stats-card__desc {
+  font-size: 20rpx;
+  opacity: 0.75;
+  margin-top: 4rpx;
+}
+
+.stats-card__warning {
+  margin-top: 20rpx;
+  padding: 14rpx 20rpx;
+  background: rgba(255, 107, 107, 0.25);
+  border-radius: 10rpx;
+  font-size: 24rpx;
+  color: #FFD666;
+  text-align: center;
+}
+
+.section {
+  padding: 20rpx 24rpx;
+}
+
+.section__title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.log-list {
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.log-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #F5F5F5;
+}
+
+.log-item:last-child {
+  border-bottom: none;
+}
+
+.log-item__left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.log-item__icon {
+  font-size: 20rpx;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.log-item__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.log-item__desc {
+  font-size: 28rpx;
+  color: #333;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.log-item__time {
+  font-size: 22rpx;
+  color: #bbb;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.log-item__amount {
+  font-size: 32rpx;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-left: 16rpx;
+}
+
+.no-more {
+  text-align: center;
+  padding: 30rpx;
+  font-size: 24rpx;
+  color: #ccc;
+}

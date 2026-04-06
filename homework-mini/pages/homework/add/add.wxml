@@ -1,0 +1,144 @@
+<view class="page">
+  <view class="form">
+    <!-- 作业名称 -->
+    <view class="form-item">
+      <text class="form-item__label">作业名称 <text class="required">*</text></text>
+      <input
+        class="form-item__input"
+        placeholder="请输入作业名称"
+        value="{{form.name}}"
+        bindinput="onInput"
+        data-field="name"
+        maxlength="50"
+      />
+    </view>
+
+    <!-- 作业描述 -->
+    <view class="form-item">
+      <text class="form-item__label">作业描述</text>
+      <textarea
+        class="form-item__textarea"
+        placeholder="请输入作业描述（选填）"
+        value="{{form.description}}"
+        bindinput="onInput"
+        data-field="description"
+        maxlength="200"
+        auto-height
+      />
+    </view>
+
+    <!-- 类型选择 -->
+    <view class="form-item">
+      <text class="form-item__label">作业类型 <text class="required">*</text></text>
+      <view class="type-selector">
+        <view
+          wx:for="{{typeOptions}}"
+          wx:key="value"
+          class="type-btn {{form.type === item.value ? 'type-btn--active' : ''}}"
+          bindtap="selectType"
+          data-type="{{item.value}}"
+        >
+          <text>{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Weekly: 周几选择 -->
+    <view class="form-item" wx:if="{{form.type === 'weekly'}}">
+      <text class="form-item__label">选择周几 <text class="required">*</text></text>
+      <view class="weekday-selector">
+        <view
+          wx:for="{{weekdays}}"
+          wx:key="index"
+          class="weekday-btn {{form.config.weekdays && form.config.weekdays.indexOf(index) > -1 ? 'weekday-btn--active' : ''}}"
+          bindtap="toggleWeekday"
+          data-day="{{index}}"
+        >
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <!-- Monthly: 日期选择 -->
+    <view class="form-item" wx:if="{{form.type === 'monthly'}}">
+      <text class="form-item__label">选择日期 <text class="required">*</text></text>
+      <view class="date-grid">
+        <view
+          wx:for="{{31}}"
+          wx:key="*this"
+          class="date-cell {{form.config.days && form.config.days.indexOf(index + 1) > -1 ? 'date-cell--active' : ''}}"
+          bindtap="toggleMonthDay"
+          data-day="{{index + 1}}"
+        >
+          {{index + 1}}
+        </view>
+      </view>
+    </view>
+
+    <!-- Custom: 起止日期 -->
+    <view wx:if="{{form.type === 'custom'}}">
+      <view class="form-item">
+        <text class="form-item__label">开始日期 <text class="required">*</text></text>
+        <picker mode="date" value="{{form.config.start_date}}" bindchange="onDateChange" data-field="start_date">
+          <view class="form-item__picker">
+            <text wx:if="{{form.config.start_date}}">{{form.config.start_date}}</text>
+            <text wx:else class="placeholder">请选择开始日期</text>
+          </view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="form-item__label">结束日期 <text class="required">*</text></text>
+        <picker mode="date" value="{{form.config.end_date}}" start="{{form.config.start_date}}" bindchange="onDateChange" data-field="end_date">
+          <view class="form-item__picker">
+            <text wx:if="{{form.config.end_date}}">{{form.config.end_date}}</text>
+            <text wx:else class="placeholder">请选择结束日期</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 积分 -->
+    <view class="form-item">
+      <text class="form-item__label">完成积分 <text class="required">*</text></text>
+      <input
+        class="form-item__input"
+        type="number"
+        placeholder="完成后获得的积分"
+        value="{{form.points}}"
+        bindinput="onInput"
+        data-field="points"
+      />
+    </view>
+
+    <!-- 惩罚积分 -->
+    <view class="form-item">
+      <text class="form-item__label">惩罚积分</text>
+      <input
+        class="form-item__input"
+        type="number"
+        placeholder="未完成扣除的积分（选填）"
+        value="{{form.penalty}}"
+        bindinput="onInput"
+        data-field="penalty"
+      />
+    </view>
+
+    <!-- 过期天数 -->
+    <view class="form-item">
+      <text class="form-item__label">过期天数</text>
+      <input
+        class="form-item__input"
+        type="number"
+        placeholder="积分过期天数（选填）"
+        value="{{form.expire_days}}"
+        bindinput="onInput"
+        data-field="expire_days"
+      />
+    </view>
+
+    <!-- 提交按钮 -->
+    <button class="submit-btn btn btn-primary btn-block" bindtap="onSubmit" loading="{{submitting}}">
+      {{isEdit ? '保存修改' : '创建作业'}}
+    </button>
+  </view>
+</view>

@@ -1,0 +1,61 @@
+<view class="container">
+  <!-- 用户列表 -->
+  <view class="user-list" wx:if="{{!isEmpty}}">
+    <view class="card user-item" wx:for="{{users}}" wx:key="id" bindtap="onUserTap" data-user="{{item}}">
+      <view class="flex align-center">
+        <image class="user-avatar" src="{{item.avatar_url || '/images/default-avatar.png'}}" mode="aspectFill" />
+        <view class="user-info flex-1 ml-20">
+          <view class="flex-between">
+            <view class="user-name text-bold">{{item.nickname || item.name || '未设置昵称'}}</view>
+            <view class="tag {{item.role === 'admin' ? 'tag-admin' : 'tag-normal'}}">
+              {{item.role === 'admin' ? '管理员' : item.role === 'teacher' ? '老师' : item.role === 'parent' ? '家长' : item.role === 'student' ? '学生' : item.role}}
+            </view>
+          </view>
+          <view class="flex-between mt-10">
+            <view class="flex align-center">
+              <text class="text-sm text-warning text-bold">{{item.points || 0}} 积分</text>
+            </view>
+            <text class="text-sm text-gray">{{item.created_at}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{isEmpty && !loading}}">
+    <view class="empty-icon">👥</view>
+    <view class="empty-text">暂无用户数据</view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="loading-more" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="text-sm text-gray ml-10">加载中...</text>
+  </view>
+
+  <view class="no-more text-sm text-gray" wx:if="{{!hasMore && users.length > 0 && !loading}}">
+    — 没有更多了 —
+  </view>
+
+  <!-- 积分调整弹窗 -->
+  <view class="modal-mask" wx:if="{{showAdjust}}" bindtap="onMaskTap"></view>
+  <view class="modal-dialog" wx:if="{{showAdjust}}" catchtap="">
+    <view class="modal-title text-bold">调整积分</view>
+    <view class="modal-user text-sm text-gray">用户：{{currentUser.nickname || currentUser.name}}</view>
+
+    <view class="modal-form mt-20">
+      <view class="modal-label">积分数（正数增加，负数扣除）</view>
+      <input class="modal-input" type="number" placeholder="请输入积分数" value="{{adjustPoints}}" bindinput="onAdjustPointsInput" />
+
+      <view class="modal-label mt-20">调整原因</view>
+      <input class="modal-input" placeholder="请输入原因" value="{{adjustReason}}" bindinput="onAdjustReasonInput" />
+    </view>
+
+    <view class="modal-actions flex mt-30">
+      <button class="btn btn-outline flex-1" bindtap="onCancelAdjust">取消</button>
+      <view style="width: 20rpx;"></view>
+      <button class="btn btn-primary flex-1" bindtap="onConfirmAdjust">确认</button>
+    </view>
+  </view>
+</view>

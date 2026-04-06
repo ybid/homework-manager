@@ -1,0 +1,33 @@
+<view class="hw-card {{item.completed ? 'hw-card--done' : ''}}" bindtap="onCardTap">
+  <view class="hw-card__left">
+    <view class="hw-card__status {{item.completed ? 'hw-card__status--done' : ''}}">
+      <text wx:if="{{item.completed}}">✓</text>
+      <text wx:else>○</text>
+    </view>
+  </view>
+
+  <view class="hw-card__content">
+    <view class="hw-card__header">
+      <text class="hw-card__name {{item.completed ? 'hw-card__name--done' : ''}}">{{item.name}}</text>
+      <view class="hw-card__tag" style="background: {{typeColor}}20; color: {{typeColor}};">
+        {{typeLabel}}
+      </view>
+    </view>
+    <view class="hw-card__info">
+      <text class="hw-card__points">🏆 {{item.points}}积分</text>
+      <text wx:if="{{item.completed_at}}" class="hw-card__time">{{item.completed_at}}</text>
+    </view>
+  </view>
+
+  <view class="hw-card__right" wx:if="{{!item.completed && showAction}}">
+    <view class="hw-card__action-wrap">
+      <button class="hw-card__btn" catchtap="onComplete">
+        打卡
+      </button>
+      <view wx:if="{{showPointsAnim}}" class="points-anim">+{{item.points}}</view>
+    </view>
+  </view>
+  <view class="hw-card__right" wx:elif="{{item.completed}}">
+    <text class="hw-card__done-text">已完成</text>
+  </view>
+</view>

@@ -1,0 +1,37 @@
+<view class="page">
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <view
+      wx:for="{{statusOptions}}"
+      wx:key="value"
+      class="filter-item {{currentStatus === item.value ? 'filter-item--active' : ''}}"
+      bindtap="onFilter"
+      data-status="{{item.value}}"
+    >
+      {{item.label}}
+    </view>
+  </view>
+
+  <loading show="{{loading}}" wx:if="{{loading}}" />
+
+  <view class="list" wx:if="{{!loading}}">
+    <homework-card
+      wx:for="{{homeworks}}"
+      wx:key="id"
+      item="{{item}}"
+      showAction="{{false}}"
+      bind:cardtap="onCardTap"
+    />
+  </view>
+
+  <view class="no-more" wx:if="{{noMore && homeworks.length > 0}}">— 没有更多了 —</view>
+
+  <empty-state
+    wx:if="{{!loading && homeworks.length === 0}}"
+    icon="📋"
+    text="没有找到作业~"
+    showBtn="{{true}}"
+    btnText="去添加"
+    bind:btntap="goAdd"
+  />
+</view>

@@ -1,0 +1,5 @@
+<view class="empty">
+  <text class="empty__icon">{{icon || '📋'}}</text>
+  <text class="empty__text">{{text || '暂无数据'}}</text>
+  <button wx:if="{{showBtn}}" class="empty__btn btn btn-primary btn-sm" bindtap="onBtnTap">{{btnText || '去看看'}}</button>
+</view>

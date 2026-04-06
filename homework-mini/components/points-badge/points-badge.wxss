@@ -1,0 +1,17 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 20rpx;
+  border-radius: 24rpx;
+  color: #fff;
+}
+
+.badge__icon {
+  font-size: 24rpx;
+  margin-right: 6rpx;
+}
+
+.badge__text {
+  font-size: 24rpx;
+  font-weight: 600;
+}

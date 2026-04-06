@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+*.egg
+
+# Environment
+.env
+*.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data
+homework-server/data/
+*.db
+*.sqlite3
+
+# Logs
+*.log
+/tmp/
+
+# Node
+node_modules/
+
+# Mini Program
+homework-mini/project.private.config.json
+homework-mini/miniprogram_npm/

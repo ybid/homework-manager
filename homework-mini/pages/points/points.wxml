@@ -1,0 +1,59 @@
+<view class="page">
+  <!-- 积分概览卡片 -->
+  <view class="stats-card">
+    <view class="stats-card__main">
+      <text class="stats-card__label">总积分</text>
+      <text class="stats-card__total">{{stats.total_points || 0}}</text>
+    </view>
+    <view class="stats-card__grid">
+      <view class="stats-card__item">
+        <text class="stats-card__num text-success">+{{stats.today_earned || 0}}</text>
+        <text class="stats-card__desc">今日获得</text>
+      </view>
+      <view class="stats-card__item">
+        <text class="stats-card__num text-primary">+{{stats.month_earned || 0}}</text>
+        <text class="stats-card__desc">本月获得</text>
+      </view>
+      <view class="stats-card__item">
+        <text class="stats-card__num" style="color:#52C41A;">{{stats.total_earned || 0}}</text>
+        <text class="stats-card__desc">累计获得</text>
+      </view>
+      <view class="stats-card__item">
+        <text class="stats-card__num text-danger">{{stats.total_spent || 0}}</text>
+        <text class="stats-card__desc">累计消耗</text>
+      </view>
+    </view>
+    <view class="stats-card__warning" wx:if="{{stats.expiring_soon > 0}}">
+      <text>⚠️ 有 {{stats.expiring_soon}} 积分即将过期，请尽快使用！</text>
+    </view>
+  </view>
+
+  <!-- 积分流水 -->
+  <view class="section">
+    <view class="section__title">积分明细</view>
+
+    <view class="log-list" wx:if="{{logs.length > 0}}">
+      <view class="log-item" wx:for="{{logs}}" wx:key="id">
+        <view class="log-item__left">
+          <text class="log-item__icon">{{item.amount > 0 ? '🟢' : '🔴'}}</text>
+          <view class="log-item__info">
+            <text class="log-item__desc">{{item.description}}</text>
+            <text class="log-item__time">{{item.created_at}}</text>
+          </view>
+        </view>
+        <text class="log-item__amount {{item.amount > 0 ? 'text-success' : 'text-danger'}}">
+          {{item.amount > 0 ? '+' : ''}}{{item.amount}}
+        </text>
+      </view>
+    </view>
+
+    <loading show="{{loadingMore}}" text="加载更多..." wx:if="{{loadingMore}}" />
+    <view class="no-more" wx:if="{{noMore && logs.length > 0}}">— 没有更多了 —</view>
+
+    <empty-state
+      wx:if="{{!loading && logs.length === 0}}"
+      icon="🏆"
+      text="还没有积分记录哦~"
+    />
+  </view>
+</view>

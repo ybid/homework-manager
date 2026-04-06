@@ -1,0 +1,59 @@
+<view class="page">
+  <!-- 顶部日期与统计 -->
+  <view class="header">
+    <view class="header__date">
+      <text class="header__day">{{today}}</text>
+      <text class="header__weekday">{{weekday}}</text>
+    </view>
+    <view class="header__stats">
+      <view class="header__stat-item">
+        <text class="header__stat-num text-warning">{{stats.today_points || 0}}</text>
+        <text class="header__stat-label">今日积分</text>
+      </view>
+      <view class="header__stat-divider"></view>
+      <view class="header__stat-item">
+        <text class="header__stat-num text-primary">{{stats.completed || 0}}/{{stats.total || 0}}</text>
+        <text class="header__stat-label">完成进度</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 进度条 -->
+  <view class="progress-wrap" wx:if="{{stats.total > 0}}">
+    <view class="progress-bar">
+      <view class="progress-bar__fill" style="width: {{stats.total > 0 ? (stats.completed / stats.total * 100) : 0}}%;"></view>
+    </view>
+    <text class="progress-text" wx:if="{{stats.completed >= stats.total}}">🎉 今日全部完成！</text>
+    <text class="progress-text" wx:else>还有 {{stats.pending || 0}} 项待完成</text>
+  </view>
+
+  <!-- 作业列表 -->
+  <view class="section">
+    <view class="section__title">今日作业</view>
+
+    <loading show="{{loading}}" wx:if="{{loading}}" />
+
+    <block wx:if="{{!loading && homeworks.length > 0}}">
+      <homework-card
+        wx:for="{{homeworks}}"
+        wx:key="id"
+        item="{{item}}"
+        showAction="{{true}}"
+        bind:complete="onComplete"
+        bind:cardtap="onCardTap"
+      />
+    </block>
+
+    <empty-state
+      wx:if="{{!loading && homeworks.length === 0}}"
+      icon="📝"
+      text="还没有作业，快去添加吧~"
+      showBtn="{{true}}"
+      btnText="添加作业"
+      bind:btntap="goAddHomework"
+    />
+  </view>
+
+  <!-- 浮动添加按钮 -->
+  <view class="fab" bindtap="goAddHomework">+</view>
+</view>

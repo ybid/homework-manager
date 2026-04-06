@@ -1,0 +1,198 @@
+/* 全局样式 */
+page {
+  background-color: #F5F7FA;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 28rpx;
+  color: #333;
+  box-sizing: border-box;
+}
+
+/* 色彩变量 */
+.text-primary { color: #4A90D9; }
+.text-success { color: #52C41A; }
+.text-danger { color: #FF6B6B; }
+.text-warning { color: #FFA940; }
+.text-gray { color: #999; }
+.text-light { color: #ccc; }
+
+.bg-primary { background-color: #4A90D9; }
+.bg-success { background-color: #52C41A; }
+.bg-danger { background-color: #FF6B6B; }
+.bg-warning { background-color: #FFA940; }
+
+/* 通用卡片 */
+.card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin: 20rpx 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+/* Flex 工具 */
+.flex { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-1 { flex: 1; }
+.align-center { align-items: center; }
+
+/* 间距 */
+.mt-10 { margin-top: 10rpx; }
+.mt-20 { margin-top: 20rpx; }
+.mt-30 { margin-top: 30rpx; }
+.mb-10 { margin-bottom: 10rpx; }
+.mb-20 { margin-bottom: 20rpx; }
+.ml-10 { margin-left: 10rpx; }
+.ml-20 { margin-left: 20rpx; }
+.mr-10 { margin-right: 10rpx; }
+.mr-20 { margin-right: 20rpx; }
+.p-20 { padding: 20rpx; }
+.p-24 { padding: 24rpx; }
+
+/* 文字大小 */
+.text-xs { font-size: 22rpx; }
+.text-sm { font-size: 24rpx; }
+.text-base { font-size: 28rpx; }
+.text-lg { font-size: 32rpx; }
+.text-xl { font-size: 36rpx; }
+.text-2xl { font-size: 44rpx; }
+.text-3xl { font-size: 56rpx; }
+.text-bold { font-weight: 600; }
+
+/* 按钮 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16rpx 32rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  border: none;
+  line-height: 1.4;
+}
+
+.btn::after { border: none; }
+
+.btn-primary {
+  background: linear-gradient(135deg, #4A90D9, #357ABD);
+  color: #fff;
+}
+
+.btn-primary:active {
+  opacity: 0.85;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #52C41A, #3DA80E);
+  color: #fff;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #FF6B6B, #E85555);
+  color: #fff;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2rpx solid #4A90D9;
+  color: #4A90D9;
+}
+
+.btn-sm {
+  padding: 8rpx 24rpx;
+  font-size: 24rpx;
+}
+
+.btn-block {
+  display: flex;
+  width: 100%;
+}
+
+.btn-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* 积分动画 */
+@keyframes pointsFlyIn {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-60rpx) scale(1.3);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-120rpx) scale(0.8);
+  }
+}
+
+.points-anim {
+  animation: pointsFlyIn 1.2s ease-out forwards;
+  position: absolute;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #FFA940;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* 成功动画 */
+@keyframes successPop {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.success-anim {
+  animation: successPop 0.5s ease-out forwards;
+}
+
+/* 浮动按钮 */
+.fab {
+  position: fixed;
+  right: 40rpx;
+  bottom: 200rpx;
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4A90D9, #357ABD);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  box-shadow: 0 6rpx 20rpx rgba(74, 144, 217, 0.4);
+  z-index: 99;
+}
+
+.fab:active {
+  transform: scale(0.92);
+}
+
+/* 标签 */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+/* 分割线 */
+.divider {
+  height: 1rpx;
+  background: #EBEDF0;
+  margin: 20rpx 0;
+}
+
+/* 安全底部 */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}

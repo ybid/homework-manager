@@ -1,0 +1,35 @@
+.filter-bar {
+  display: flex;
+  padding: 20rpx 24rpx;
+  gap: 16rpx;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.filter-item {
+  padding: 12rpx 28rpx;
+  border-radius: 28rpx;
+  font-size: 26rpx;
+  color: #666;
+  background: #F5F7FA;
+}
+
+.filter-item--active {
+  background: #4A90D9;
+  color: #fff;
+  font-weight: 500;
+}
+
+.list {
+  padding: 20rpx 24rpx;
+}
+
+.no-more {
+  text-align: center;
+  padding: 30rpx;
+  font-size: 24rpx;
+  color: #ccc;
+}

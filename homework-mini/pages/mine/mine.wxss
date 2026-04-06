@@ -1,0 +1,121 @@
+.user-card {
+  margin: 24rpx;
+  background: linear-gradient(135deg, #4A90D9, #357ABD);
+  border-radius: 20rpx;
+  padding: 40rpx 30rpx;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  box-shadow: 0 8rpx 24rpx rgba(74, 144, 217, 0.3);
+}
+
+.user-card__avatar-wrap {
+  margin-right: 24rpx;
+}
+
+.user-card__avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(255, 255, 255, 0.5);
+}
+
+.user-card__avatar--default {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 56rpx;
+}
+
+.user-card__info {
+  flex: 1;
+}
+
+.user-card__name {
+  font-size: 36rpx;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.user-card__points {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 24rpx;
+  padding: 8rpx 20rpx;
+}
+
+.user-card__points-icon {
+  font-size: 24rpx;
+  margin-right: 6rpx;
+}
+
+.user-card__points-num {
+  font-size: 32rpx;
+  font-weight: 700;
+  margin-right: 6rpx;
+}
+
+.user-card__points-label {
+  font-size: 22rpx;
+  opacity: 0.8;
+}
+
+.menu-group {
+  margin: 24rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.menu-group__title {
+  padding: 20rpx 24rpx 0;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 24rpx;
+  border-bottom: 1rpx solid #F5F5F5;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:active {
+  background: #F9FAFB;
+}
+
+.menu-item__icon {
+  font-size: 36rpx;
+  margin-right: 20rpx;
+  width: 48rpx;
+  text-align: center;
+}
+
+.menu-item__text {
+  flex: 1;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.menu-item__arrow {
+  font-size: 36rpx;
+  color: #ccc;
+}
+
+.footer {
+  text-align: center;
+  padding: 60rpx 0 40rpx;
+}
+
+.footer__text {
+  font-size: 22rpx;
+  color: #ccc;
+}

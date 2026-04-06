@@ -1,0 +1,52 @@
+<view class="container">
+  <view class="form-section card">
+    <!-- 奖品名称 -->
+    <view class="form-item">
+      <view class="form-label">奖品名称 <text class="required">*</text></view>
+      <input class="form-input" placeholder="请输入奖品名称" value="{{form.name}}" data-field="name" bindinput="onInputChange" />
+    </view>
+
+    <!-- 描述 -->
+    <view class="form-item">
+      <view class="form-label">描述</view>
+      <textarea class="form-textarea" placeholder="请输入奖品描述" value="{{form.description}}" data-field="description" bindinput="onInputChange" maxlength="500" auto-height />
+    </view>
+
+    <!-- 图片URL -->
+    <view class="form-item">
+      <view class="form-label">图片URL</view>
+      <input class="form-input" placeholder="请输入图片链接" value="{{form.image_url}}" data-field="image_url" bindinput="onInputChange" />
+      <image wx:if="{{form.image_url}}" class="preview-image mt-20" src="{{form.image_url}}" mode="aspectFit" />
+    </view>
+
+    <!-- 所需积分 -->
+    <view class="form-item">
+      <view class="form-label">所需积分 <text class="required">*</text></view>
+      <input class="form-input" type="number" placeholder="请输入所需积分" value="{{form.points_cost}}" data-field="points_cost" bindinput="onInputChange" />
+    </view>
+
+    <!-- 库存 -->
+    <view class="form-item">
+      <view class="form-label">库存 <text class="required">*</text></view>
+      <input class="form-input" type="number" placeholder="请输入库存数量" value="{{form.stock}}" data-field="stock" bindinput="onInputChange" />
+    </view>
+
+    <!-- 状态 -->
+    <view class="form-item">
+      <view class="form-label">状态</view>
+      <picker bindchange="onStatusChange" value="{{statusIndex}}" range="{{statusOptions}}">
+        <view class="form-picker flex-between">
+          <text>{{statusOptions[statusIndex]}}</text>
+          <text class="text-gray">▼</text>
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="btn-area">
+    <button class="btn btn-primary btn-block {{submitting ? 'btn-disabled' : ''}}" bindtap="onSubmit">
+      {{isEdit ? '保存修改' : '添加奖品'}}
+    </button>
+  </view>
+</view>

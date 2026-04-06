@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "我的积分",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 100,
+  "usingComponents": {
+    "empty-state": "/components/empty-state/empty-state",
+    "loading": "/components/loading/loading"
+  }
+}

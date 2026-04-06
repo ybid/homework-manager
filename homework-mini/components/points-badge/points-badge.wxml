@@ -1,0 +1,4 @@
+<view class="badge" style="background: {{bgColor || '#FFA940'}};">
+  <text class="badge__icon">🏆</text>
+  <text class="badge__text">{{points}}</text>
+</view>

@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "全部作业",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "homework-card": "/components/homework-card/homework-card",
+    "empty-state": "/components/empty-state/empty-state",
+    "loading": "/components/loading/loading"
+  }
+}

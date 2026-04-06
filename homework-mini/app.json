@@ -1,0 +1,58 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/points/points",
+    "pages/exchange/exchange",
+    "pages/mine/mine",
+    "pages/homework/add/add",
+    "pages/homework/detail/detail",
+    "pages/homework/list/list",
+    "pages/calendar/calendar",
+    "pages/exchange/records/records",
+    "pages/admin/index/index",
+    "pages/admin/reward-edit/reward-edit",
+    "pages/admin/user-list/user-list",
+    "pages/admin/stats/stats"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#4A90D9",
+    "navigationBarTitleText": "作业打卡",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F5F7FA"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#4A90D9",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tab-home.png",
+        "selectedIconPath": "images/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/points/points",
+        "text": "积分",
+        "iconPath": "images/tab-points.png",
+        "selectedIconPath": "images/tab-points-active.png"
+      },
+      {
+        "pagePath": "pages/exchange/exchange",
+        "text": "兑换",
+        "iconPath": "images/tab-exchange.png",
+        "selectedIconPath": "images/tab-exchange-active.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "images/tab-mine.png",
+        "selectedIconPath": "images/tab-mine-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

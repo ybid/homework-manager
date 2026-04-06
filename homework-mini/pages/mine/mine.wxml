@@ -1,0 +1,58 @@
+<view class="page">
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view class="user-card__avatar-wrap">
+      <image
+        wx:if="{{userInfo.avatar_url}}"
+        class="user-card__avatar"
+        src="{{userInfo.avatar_url}}"
+        mode="aspectFill"
+      />
+      <view wx:else class="user-card__avatar user-card__avatar--default">
+        <text>👤</text>
+      </view>
+    </view>
+    <view class="user-card__info">
+      <text class="user-card__name">{{userInfo.nick_name || '未设置昵称'}}</text>
+      <view class="user-card__points">
+        <text class="user-card__points-icon">🏆</text>
+        <text class="user-card__points-num">{{points}}</text>
+        <text class="user-card__points-label">积分</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 菜单列表 -->
+  <view class="menu-group">
+    <view class="menu-item" bindtap="goPage" data-url="/pages/homework/list/list">
+      <text class="menu-item__icon">📋</text>
+      <text class="menu-item__text">我的作业</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goPage" data-url="/pages/exchange/records/records">
+      <text class="menu-item__icon">📦</text>
+      <text class="menu-item__text">兑换记录</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goPage" data-url="/pages/calendar/calendar">
+      <text class="menu-item__icon">📅</text>
+      <text class="menu-item__text">作业日历</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 管理员入口 -->
+  <view class="menu-group" wx:if="{{isAdmin}}">
+    <view class="menu-group__title">管理</view>
+    <view class="menu-item" bindtap="goPage" data-url="/pages/admin/index/index">
+      <text class="menu-item__icon">⚙️</text>
+      <text class="menu-item__text">管理面板</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 底部 -->
+  <view class="footer">
+    <text class="footer__text">作业打卡 v1.0.0</text>
+  </view>
+</view>
