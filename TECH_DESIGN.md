@@ -30,7 +30,7 @@
 | 层级 | 技术选型 | 选型理由 |
 |------|----------|----------|
 | 前端 | 微信小程序原生 | 性能好、开发成本低、官方支持 |
-| 后端 | Node.js + Express/Koa | 生态丰富、开发效率高、与前端语言统一 |
+| 后端 | Python 3.11 + FastAPI | 高性能异步框架、类型安全、自动生成API文档 |
 | 数据库 | MySQL 8.0 | 稳定可靠、事务支持好、运维成熟 |
 | 缓存 | Redis | 高性能缓存、支持分布式锁 |
 | 对象存储 | MinIO / 阿里云 OSS | 图片存储 |
@@ -63,9 +63,9 @@
 │                     自建服务器                                        │
 │                         │                                            │
 │                   ┌─────▼─────┐                                      │
-│                   │  Node.js  │                                      │
+│                   │  FastAPI  │                                      │
 │                   │  API服务  │                                      │
-│                   │  :3000    │                                      │
+│                   │  :8000    │                                      │
 │                   └─────┬─────┘                                      │
 │                         │                                            │
 │    ┌────────────────────┼────────────────────┐                      │
@@ -93,11 +93,11 @@
 |------|------|--------|
 | 小程序端 | UI 展示、用户交互 | 微信小程序原生 |
 | API 网关 | 路由、限流、鉴权 | Nginx |
-| 用户服务 | 用户注册、登录、权限 | Node.js |
-| 作业服务 | 作业 CRUD、打卡 | Node.js |
-| 积分服务 | 积分获取、消耗、统计 | Node.js |
-| 奖品服务 | 奖品管理、兑换 | Node.js |
-| 定时任务 | 积分过期、惩罚扣分 | Node-cron |
+| 用户服务 | 用户注册、登录、权限 | FastAPI |
+| 作业服务 | 作业 CRUD、打卡 | FastAPI |
+| 积分服务 | 积分获取、消耗、统计 | FastAPI |
+| 奖品服务 | 奖品管理、兑换 | FastAPI |
+| 定时任务 | 积分过期、惩罚扣分 | APScheduler |
 | 缓存服务 | 热点数据缓存、分布式锁 | Redis |
 | 数据存储 | 持久化数据存储 | MySQL |
 | 对象存储 | 图片文件存储 | MinIO/OSS |
@@ -110,68 +110,70 @@
 
 ```
 homework-server/
-├── src/
-│   ├── config/              # 配置文件
-│   │   ├── index.js         # 主配置
-│   │   ├── database.js      # 数据库配置
-│   │   └── redis.js         # Redis配置
+├── app/
+│   ├── __init__.py
+│   ├── main.py              # FastAPI 应用入口
+│   ├── config.py             # 配置（Pydantic Settings，从环境变量读取）
+│   ├── database.py           # SQLAlchemy 引擎、Session
+│   ├── redis_client.py       # Redis 连接
 │   │
-│   ├── controllers/         # 控制器
-│   │   ├── user.controller.js
-│   │   ├── homework.controller.js
-│   │   ├── points.controller.js
-│   │   ├── reward.controller.js
-│   │   └── admin.controller.js
+│   ├── models/               # SQLAlchemy 模型
+│   │   ├── __init__.py
+│   │   ├── user.py
+│   │   ├── homework.py
+│   │   ├── record.py
+│   │   ├── point_log.py
+│   │   ├── reward.py
+│   │   └── exchange.py
 │   │
-│   ├── services/            # 业务逻辑
-│   │   ├── user.service.js
-│   │   ├── homework.service.js
-│   │   ├── points.service.js
-│   │   ├── reward.service.js
-│   │   └── task.service.js
+│   ├── schemas/              # Pydantic 请求/响应模型
+│   │   ├── __init__.py
+│   │   ├── common.py         # 通用响应、分页
+│   │   ├── user.py
+│   │   ├── homework.py
+│   │   ├── points.py
+│   │   ├── reward.py
+│   │   └── exchange.py
 │   │
-│   ├── models/              # 数据模型
-│   │   ├── user.model.js
-│   │   ├── homework.model.js
-│   │   ├── record.model.js
-│   │   ├── point_log.model.js
-│   │   ├── reward.model.js
-│   │   └── exchange.model.js
+│   ├── api/                  # 路由
+│   │   ├── __init__.py
+│   │   ├── deps.py           # 依赖注入（get_db, get_current_user, require_admin）
+│   │   ├── auth.py
+│   │   ├── user.py
+│   │   ├── homework.py
+│   │   ├── points.py
+│   │   ├── reward.py
+│   │   ├── exchange.py
+│   │   └── admin.py
 │   │
-│   ├── middlewares/         # 中间件
-│   │   ├── auth.js          # 认证中间件
-│   │   ├── admin.js         # 管理员权限
-│   │   ├── validator.js     # 参数校验
-│   │   └── errorHandler.js  # 错误处理
+│   ├── services/             # 业务逻辑层
+│   │   ├── __init__.py
+│   │   ├── user_service.py
+│   │   ├── homework_service.py
+│   │   ├── points_service.py
+│   │   ├── reward_service.py
+│   │   └── task_service.py   # 定时任务
 │   │
-│   ├── routes/              # 路由
-│   │   ├── index.js
-│   │   ├── user.routes.js
-│   │   ├── homework.routes.js
-│   │   ├── points.routes.js
-│   │   ├── reward.routes.js
-│   │   └── admin.routes.js
+│   ├── middleware/
+│   │   ├── __init__.py
+│   │   └── rate_limit.py     # Redis 限流中间件
 │   │
-│   ├── utils/               # 工具函数
-│   │   ├── logger.js
-│   │   ├── response.js
-│   │   ├── wechat.js        # 微信接口
-│   │   └── cron.js          # 定时任务
-│   │
-│   └── app.js               # 应用入口
+│   └── utils/
+│       ├── __init__.py
+│       ├── response.py       # 统一响应封装
+│       ├── wechat.py         # 微信 jscode2session
+│       └── security.py       # JWT 生成/验证
 │
-├── tests/                   # 测试
-│   ├── unit/
-│   └── integration/
-│
-├── docker/                  # Docker配置
-│   ├── Dockerfile
-│   └── docker-compose.yml
-│
-├── scripts/                 # 脚本
-│   └── init-db.sql          # 数据库初始化
-│
-├── package.json
+├── alembic/                  # 数据库迁移
+│   ├── env.py
+│   └── versions/
+├── alembic.ini
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+├── .env.example
+├── scripts/
+│   └── init_db.py            # 初始化脚本（建表 + 种子数据）
 └── README.md
 ```
 
@@ -675,176 +677,134 @@ Authorization: Bearer <token>   // 需要登录的接口
 
 ### 6.1 用户登录流程
 
-```javascript
-// 1. 小程序调用 wx.login() 获取 code
-wx.login({
-  success: (res) => {
-    const code = res.code
-    // 2. 发送 code 到后端
-    request.post('/auth/login', { code })
-  }
-})
+```python
+# 1. 小程序端调用 wx.login() 获取 code，发送到后端 /api/v1/auth/login
 
-// 3. 后端处理
-async function login(code) {
-  // 调用微信接口获取 openid
-  const wxRes = await axios.get('https://api.weixin.qq.com/sns/jscode2session', {
-    params: {
-      appid: APP_ID,
-      secret: APP_SECRET,
-      js_code: code,
-      grant_type: 'authorization_code'
-    }
-  })
-  
-  const { openid, session_key } = wxRes.data
-  
-  // 查询或创建用户
-  let user = await User.findOne({ where: { openid } })
-  if (!user) {
-    user = await User.create({ openid })
-  }
-  
-  // 生成 JWT token
-  const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' })
-  
-  return { token, user }
-}
+# 2. 后端处理 (app/services/user_service.py)
+async def login(code: str, db: Session) -> dict:
+    # 调用微信接口获取 openid
+    openid = await get_openid_by_code(code)  # httpx 调用 jscode2session
+
+    # 查询或创建用户
+    user = db.query(User).filter(User.openid == openid).first()
+    is_new = False
+    if not user:
+        user = User(openid=openid)
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        is_new = True
+
+    # 生成 JWT token
+    token = create_access_token(user.id)  # PyJWT, 7天过期
+
+    return {"token": token, "user": user, "is_new": is_new}
 ```
 
 ### 6.2 打卡流程
 
-```javascript
-async function completeHomework(userId, homeworkId, date) {
-  // 开启事务
-  const transaction = await sequelize.transaction()
-  
-  try {
-    // 1. 查询作业
-    const homework = await Homework.findOne({
-      where: { id: homeworkId, user_id: userId },
-      transaction
-    })
-    
-    if (!homework) throw new Error('作业不存在')
-    
-    // 2. 检查是否已打卡
-    const existing = await Record.findOne({
-      where: { user_id: userId, homework_id: homeworkId, complete_date: date },
-      transaction
-    })
-    
-    if (existing) throw new Error('今日已完成打卡')
-    
-    // 3. 创建打卡记录
-    const record = await Record.create({
-      user_id: userId,
-      homework_id: homeworkId,
-      homework_name: homework.name,
-      points: homework.points,
-      complete_date: date
-    }, { transaction })
-    
-    // 4. 创建积分流水
-    const user = await User.findByPk(userId, { transaction })
-    const newBalance = user.total_points + homework.points
-    
-    await PointLog.create({
-      user_id: userId,
-      type: 'earn',
-      amount: homework.points,
-      balance: newBalance,
-      source: 'homework',
-      source_id: homeworkId,
-      expire_at: homework.expire_days ? dayjs().add(homework.expire_days, 'day').toDate() : null
-    }, { transaction })
-    
-    // 5. 更新用户积分
-    await user.update({
-      total_points: newBalance,
-      total_earned: user.total_earned + homework.points
-    }, { transaction })
-    
-    // 提交事务
-    await transaction.commit()
-    
-    return { record, newBalance }
-    
-  } catch (error) {
-    await transaction.rollback()
-    throw error
-  }
-}
+```python
+def complete_homework(user_id: int, homework_id: int, date: date, db: Session) -> dict:
+    # 1. 查询作业
+    homework = db.query(Homework).filter(
+        Homework.id == homework_id, Homework.user_id == user_id
+    ).first()
+    if not homework:
+        raise AppException(code=20001, message="作业不存在")
+
+    # 2. 检查是否已打卡
+    existing = db.query(Record).filter(
+        Record.user_id == user_id,
+        Record.homework_id == homework_id,
+        Record.complete_date == date,
+    ).first()
+    if existing:
+        raise AppException(code=20002, message="今日已完成该作业，不可重复打卡")
+
+    try:
+        # 3. 创建打卡记录
+        record = Record(
+            user_id=user_id, homework_id=homework_id,
+            homework_name=homework.name, points=homework.points,
+            complete_date=date,
+        )
+        db.add(record)
+
+        # 4. 更新用户积分
+        user = db.query(User).filter(User.id == user_id).first()
+        new_balance = user.total_points + homework.points
+        user.total_points = new_balance
+        user.total_earned += homework.points
+
+        # 5. 创建积分流水
+        expire_at = None
+        if homework.expire_days:
+            expire_at = datetime.now() + timedelta(days=homework.expire_days)
+        point_log = PointLog(
+            user_id=user_id, type="earn", amount=homework.points,
+            balance=new_balance, source="homework", source_id=homework_id,
+            description=f"完成作业: {homework.name}", expire_at=expire_at,
+        )
+        db.add(point_log)
+
+        db.commit()
+        return {"record_id": record.id, "points_earned": homework.points, "total_points": new_balance}
+    except Exception:
+        db.rollback()
+        raise
 ```
 
 ### 6.3 兑换流程
 
-```javascript
-async function exchangeReward(userId, rewardId, quantity = 1) {
-  const transaction = await sequelize.transaction()
-  
-  try {
-    // 1. 查询奖品
-    const reward = await Reward.findOne({
-      where: { id: rewardId, status: 'active' },
-      transaction
-    })
-    
-    if (!reward) throw new Error('奖品不存在或已下架')
-    if (reward.stock < quantity) throw new Error('库存不足')
-    
-    // 2. 查询用户积分
-    const user = await User.findByPk(userId, { transaction, lock: true })
-    const pointsNeeded = reward.points * quantity
-    
-    if (user.total_points < pointsNeeded) {
-      throw new Error(`积分不足，还需 ${pointsNeeded - user.total_points} 积分`)
-    }
-    
-    // 3. 扣减库存（乐观锁）
-    const [updated] = await Reward.update(
-      { stock: sequelize.literal('stock - ' + quantity) },
-      { where: { id: rewardId, stock: { [Op.gte]: quantity } }, transaction }
-    )
-    
-    if (!updated) throw new Error('库存扣减失败，请重试')
-    
-    // 4. 创建兑换记录
-    const exchange = await Exchange.create({
-      user_id: userId,
-      reward_id: rewardId,
-      reward_name: reward.name,
-      reward_image: reward.image_url,
-      points: pointsNeeded,
-      quantity
-    }, { transaction })
-    
-    // 5. 创建积分流水
-    const newBalance = user.total_points - pointsNeeded
-    await PointLog.create({
-      user_id: userId,
-      type: 'spend',
-      amount: -pointsNeeded,
-      balance: newBalance,
-      source: 'exchange',
-      source_id: exchange.id
-    }, { transaction })
-    
-    // 6. 更新用户积分
-    await user.update({
-      total_points: newBalance,
-      total_spent: user.total_spent + pointsNeeded
-    }, { transaction })
-    
-    await transaction.commit()
-    
-    return { exchange, remainingPoints: newBalance }
-    
-  } catch (error) {
-    await transaction.rollback()
-    throw error
-  }
-}
+```python
+def exchange_reward(user_id: int, reward_id: int, quantity: int, db: Session) -> dict:
+    # 1. 查询奖品
+    reward = db.query(Reward).filter(
+        Reward.id == reward_id, Reward.status == "active"
+    ).first()
+    if not reward:
+        raise AppException(code=30001, message="奖品不存在或已下架")
+
+    points_needed = reward.points * quantity
+
+    # 2. 查询用户积分
+    user = db.query(User).filter(User.id == user_id).first()
+    if user.total_points < points_needed:
+        raise AppException(code=30002, message=f"积分不足，还需 {points_needed - user.total_points} 积分")
+
+    try:
+        # 3. 扣减库存（乐观锁）
+        updated = db.query(Reward).filter(
+            Reward.id == reward_id, Reward.stock >= quantity
+        ).update({"stock": Reward.stock - quantity})
+        if not updated:
+            raise AppException(code=30003, message="库存扣减失败，请重试")
+
+        # 4. 创建兑换记录
+        exchange = Exchange(
+            user_id=user_id, reward_id=reward_id,
+            reward_name=reward.name, reward_image=reward.image_url,
+            points=points_needed, quantity=quantity,
+        )
+        db.add(exchange)
+
+        # 5. 更新用户积分
+        new_balance = user.total_points - points_needed
+        user.total_points = new_balance
+        user.total_spent += points_needed
+
+        # 6. 创建积分流水
+        point_log = PointLog(
+            user_id=user_id, type="spend", amount=-points_needed,
+            balance=new_balance, source="exchange", source_id=exchange.id,
+        )
+        db.add(point_log)
+
+        db.commit()
+        return {"exchange_id": exchange.id, "points_spent": points_needed, "total_points": new_balance}
+    except Exception:
+        db.rollback()
+        raise
 ```
 
 ---
@@ -855,97 +815,85 @@ async function exchangeReward(userId, rewardId, quantity = 1) {
 
 **触发时间：** 每天 00:05
 
-```javascript
-const cron = require('node-cron')
+```python
+from apscheduler.schedulers.background import BackgroundScheduler
 
-// 积分过期处理
-cron.schedule('5 0 * * *', async () => {
-  const transaction = await sequelize.transaction()
-  
-  try {
-    // 查询过期的积分流水
-    const expiredLogs = await PointLog.findAll({
-      where: {
-        type: 'earn',
-        expire_at: { [Op.lte]: new Date() },
-        is_expired: false
-      },
-      transaction
-    })
-    
-    for (const log of expiredLogs) {
-      // 创建过期流水
-      await PointLog.create({
-        user_id: log.user_id,
-        type: 'expire',
-        amount: -log.amount,
-        balance: 0, // 稍后计算
-        source: 'expire',
-        source_id: log.id,
-        description: '积分过期'
-      }, { transaction })
-      
-      // 更新用户积分
-      await User.decrement('total_points', {
-        by: log.amount,
-        where: { id: log.user_id },
-        transaction
-      })
-      
-      // 标记原流水为已过期
-      await log.update({ is_expired: true }, { transaction })
-    }
-    
-    await transaction.commit()
-    logger.info(`积分过期处理完成，共处理 ${expiredLogs.length} 条`)
-    
-  } catch (error) {
-    await transaction.rollback()
-    logger.error('积分过期处理失败:', error)
-  }
-})
+scheduler = BackgroundScheduler()
+
+# 积分过期处理 (app/services/task_service.py)
+def expire_points():
+    db = SessionLocal()
+    try:
+        expired_logs = db.query(PointLog).filter(
+            PointLog.type == "earn",
+            PointLog.expire_at <= datetime.now(),
+            PointLog.is_expired == False,
+        ).all()
+
+        for log in expired_logs:
+            user = db.query(User).filter(User.id == log.user_id).first()
+            user.total_points -= log.amount
+
+            db.add(PointLog(
+                user_id=log.user_id, type="expire", amount=-log.amount,
+                balance=user.total_points, source="expire",
+                source_id=log.id, description="积分过期",
+            ))
+            log.is_expired = True
+
+        db.commit()
+        logger.info(f"积分过期处理完成，共处理 {len(expired_logs)} 条")
+    except Exception as e:
+        db.rollback()
+        logger.error(f"积分过期处理失败: {e}")
+    finally:
+        db.close()
+
+scheduler.add_job(expire_points, "cron", hour=0, minute=5, id="expire_points")
 ```
 
 ### 7.2 惩罚扣分
 
 **触发时间：** 每天 23:55
 
-```javascript
-// 未完成惩罚
-cron.schedule('55 23 * * *', async () => {
-  const today = dayjs().format('YYYY-MM-DD')
-  
-  try {
-    // 查询今日未完成的作业（有惩罚设置）
-    const users = await User.findAll()
-    
-    for (const user of users) {
-      const homeworks = await Homework.findAll({
-        where: { user_id: user.id, status: 'active', penalty: { [Op.gt]: 0 } }
-      })
-      
-      for (const homework of homeworks) {
-        // 检查今天是否需要执行
-        if (!shouldExecuteToday(homework, today)) continue
-        
-        // 检查是否已打卡
-        const record = await Record.findOne({
-          where: { user_id: user.id, homework_id: homework.id, complete_date: today }
-        })
-        
-        if (!record) {
-          // 执行惩罚
-          await applyPenalty(user, homework, today)
-        }
-      }
-    }
-    
-    logger.info('惩罚扣分处理完成')
-    
-  } catch (error) {
-    logger.error('惩罚扣分处理失败:', error)
-  }
-})
+```python
+def penalize_incomplete():
+    db = SessionLocal()
+    today = date.today()
+    try:
+        users = db.query(User).filter(User.status == "active").all()
+        for user in users:
+            homeworks = db.query(Homework).filter(
+                Homework.user_id == user.id,
+                Homework.status == "active",
+                Homework.penalty > 0,
+            ).all()
+
+            for hw in homeworks:
+                if not should_execute_today(hw, today):
+                    continue
+                record = db.query(Record).filter(
+                    Record.user_id == user.id,
+                    Record.homework_id == hw.id,
+                    Record.complete_date == today,
+                ).first()
+                if not record:
+                    user.total_points -= hw.penalty
+                    db.add(PointLog(
+                        user_id=user.id, type="adjust", amount=-hw.penalty,
+                        balance=user.total_points, source="penalty",
+                        source_id=hw.id,
+                        description=f"未完成作业惩罚: {hw.name}",
+                    ))
+        db.commit()
+        logger.info("惩罚扣分处理完成")
+    except Exception as e:
+        db.rollback()
+        logger.error(f"惩罚扣分处理失败: {e}")
+    finally:
+        db.close()
+
+scheduler.add_job(penalize_incomplete, "cron", hour=23, minute=55, id="penalize_incomplete")
 ```
 
 ---
@@ -966,7 +914,7 @@ cron.schedule('55 23 * * *', async () => {
 | 软件 | 版本 |
 |------|------|
 | Ubuntu | 22.04 LTS |
-| Node.js | 18.x LTS |
+| Python | 3.11+ |
 | MySQL | 8.0 |
 | Redis | 7.x |
 | Nginx | 1.24 |
@@ -979,15 +927,13 @@ cron.schedule('55 23 * * *', async () => {
 version: '3.8'
 
 services:
-  # Node.js API
+  # FastAPI
   api:
     build: .
     ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
-      - DB_HOST=mysql
-      - REDIS_HOST=redis
+      - "8000:8000"
+    env_file:
+      - .env
     depends_on:
       - mysql
       - redis
@@ -1014,7 +960,7 @@ services:
       - MYSQL_DATABASE=homework
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+      # 初始化用 python -m scripts.init_db
     ports:
       - "3306:3306"
     restart: always
@@ -1038,7 +984,7 @@ volumes:
 ```nginx
 # nginx.conf
 upstream api {
-    server api:3000;
+    server api:8000;
 }
 
 server {
@@ -1087,34 +1033,30 @@ limit_req_zone $binary_remote_addr zone=api_limit=10m rate=10r/s;
 
 ### 9.1 认证授权
 
-```javascript
-// JWT 认证中间件
-function authMiddleware(req, res, next) {
-  const token = req.headers.authorization?.replace('Bearer ', '')
-  
-  if (!token) {
-    return res.status(401).json({ code: 401, message: '未登录' })
-  }
-  
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET)
-    req.userId = decoded.userId
-    next()
-  } catch (error) {
-    return res.status(401).json({ code: 401, message: 'token无效或已过期' })
-  }
-}
+```python
+# JWT 认证依赖注入 (app/api/deps.py)
+from fastapi import Depends, Header
+from app.utils.security import decode_access_token
 
-// 管理员权限中间件
-function adminMiddleware(req, res, next) {
-  const user = await User.findByPk(req.userId)
-  
-  if (user.role !== 'admin') {
-    return res.status(403).json({ code: 403, message: '无权限' })
-  }
-  
-  next()
-}
+async def get_current_user(
+    authorization: str = Header(...),
+    db: Session = Depends(get_db),
+) -> User:
+    token = authorization.replace("Bearer ", "")
+    payload = decode_access_token(token)
+    if not payload:
+        raise AppException(code=10001, message="token无效或已过期", status_code=401)
+    user = db.query(User).filter(User.id == payload["user_id"]).first()
+    if not user:
+        raise AppException(code=10001, message="用户不存在", status_code=401)
+    return user
+
+
+# 管理员权限依赖注入
+async def require_admin(user: User = Depends(get_current_user)) -> User:
+    if user.role != "admin":
+        raise AppException(code=10003, message="无权限", status_code=403)
+    return user
 ```
 
 ### 9.2 数据安全
@@ -1127,25 +1069,29 @@ function adminMiddleware(req, res, next) {
 ### 9.3 接口安全
 
 - 请求频率限制（Redis 实现）
-- 参数校验（Joi/express-validator）
-- SQL 注入防护（ORM 参数化查询）
+- 参数校验（Pydantic 自动校验）
+- SQL 注入防护（SQLAlchemy 参数化查询）
 - XSS 防护（输入过滤）
 
-```javascript
-// 限流中间件
-const rateLimit = require('express-rate-limit')
-const RedisStore = require('rate-limit-redis')
+```python
+# Redis 限流中间件 (app/middleware/rate_limit.py)
+from starlette.middleware.base import BaseHTTPMiddleware
+from app.redis_client import get_redis
 
-const limiter = rateLimit({
-  store: new RedisStore({
-    client: redisClient
-  }),
-  windowMs: 60 * 1000, // 1分钟
-  max: 100, // 最多100次请求
-  message: { code: 429, message: '请求过于频繁，请稍后再试' }
-})
-
-app.use('/api/', limiter)
+class RateLimitMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        client_ip = request.client.host
+        key = f"rate_limit:{client_ip}"
+        r = get_redis()
+        count = r.incr(key)
+        if count == 1:
+            r.expire(key, 60)
+        if count > settings.RATE_LIMIT_PER_MINUTE:  # 默认 100次/分钟
+            return JSONResponse(
+                status_code=429,
+                content={"code": 429, "message": "请求过于频繁，请稍后再试", "data": None},
+            )
+        return await call_next(request)
 ```
 
 ---
@@ -1154,32 +1100,35 @@ app.use('/api/', limiter)
 
 ### 10.1 Redis 缓存
 
-```javascript
-// 用户积分缓存
-async function getUserPoints(userId) {
-  const cacheKey = `user:points:${userId}`
-  
-  // 先查缓存
-  const cached = await redis.get(cacheKey)
-  if (cached) return JSON.parse(cached)
-  
-  // 查数据库
-  const user = await User.findByPk(userId)
-  
-  // 写入缓存，过期10分钟
-  await redis.setex(cacheKey, 600, JSON.stringify({
-    total_points: user.total_points,
-    total_earned: user.total_earned,
-    total_spent: user.total_spent
-  }))
-  
-  return user
-}
+```python
+# 用户积分缓存 (app/services/points_service.py)
+import json
+from app.redis_client import get_redis
 
-// 积分变动后清除缓存
-async function invalidatePointsCache(userId) {
-  await redis.del(`user:points:${userId}`)
-}
+def get_user_points_cached(user_id: int, db: Session) -> dict:
+    r = get_redis()
+    cache_key = f"user:points:{user_id}"
+
+    # 先查缓存
+    cached = r.get(cache_key)
+    if cached:
+        return json.loads(cached)
+
+    # 查数据库
+    user = db.query(User).filter(User.id == user_id).first()
+    data = {
+        "total_points": user.total_points,
+        "total_earned": user.total_earned,
+        "total_spent": user.total_spent,
+    }
+
+    # 写入缓存，过期 10 分钟
+    r.setex(cache_key, 600, json.dumps(data))
+    return data
+
+
+def invalidate_points_cache(user_id: int):
+    get_redis().delete(f"user:points:{user_id}")
 ```
 
 ### 10.2 数据库优化
@@ -1195,51 +1144,41 @@ async function invalidatePointsCache(userId) {
 
 ### 11.1 日志配置
 
-```javascript
-const winston = require('winston')
+```python
+import logging
 
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
-  ),
-  transports: [
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'combined.log' })
-  ]
-})
-
-// 开发环境输出到控制台
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console())
-}
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    handlers=[
+        logging.FileHandler("error.log", level=logging.ERROR),
+        logging.FileHandler("combined.log"),
+        logging.StreamHandler(),  # 控制台输出
+    ],
+)
+logger = logging.getLogger(__name__)
 ```
 
 ### 11.2 健康检查
 
-```javascript
-// /health 接口
-app.get('/health', async (req, res) => {
-  try {
-    // 检查数据库
-    await sequelize.query('SELECT 1')
-    
-    // 检查 Redis
-    await redis.ping()
-    
-    res.json({
-      status: 'ok',
-      timestamp: new Date(),
-      uptime: process.uptime()
-    })
-  } catch (error) {
-    res.status(503).json({
-      status: 'error',
-      message: error.message
-    })
-  }
-})
+```python
+@app.get("/health")
+def health():
+    from sqlalchemy import text
+    db_ok = redis_ok = False
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        db_ok = True
+    except Exception:
+        pass
+    try:
+        get_redis().ping()
+        redis_ok = True
+    except Exception:
+        pass
+    status = "healthy" if (db_ok and redis_ok) else "unhealthy"
+    return {"status": status, "database": "ok" if db_ok else "error", "redis": "ok" if redis_ok else "error"}
 ```
 
 ---
@@ -1288,8 +1227,8 @@ app.get('/health', async (req, res) => {
 ## 附录
 
 ### 参考资料
-- [Express.js 文档](https://expressjs.com/)
-- [Sequelize ORM 文档](https://sequelize.org/)
+- [FastAPI 文档](https://fastapi.tiangolo.com/)
+- [SQLAlchemy ORM 文档](https://docs.sqlalchemy.org/)
 - [微信小程序登录流程](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/login.html)
 
 ---
@@ -1300,3 +1239,4 @@ app.get('/health', async (req, res) => {
 |------|------|--------|----------|
 | v1.0 | 2026-03-27 | architect-agent | 初始版本（云开发） |
 | v1.1 | 2026-03-27 | architect-agent | 改为自建服务器方案 |
+| v1.2 | 2026-04-06 | 大龙虾主管 | 技术栈从 Node.js 改为 Python + FastAPI，同步更新代码示例、项目结构、部署配置 |
